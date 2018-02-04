@@ -8,7 +8,7 @@
     "reflect-metadata": "0.1.12"
   },
   "scripts": {
-    "start": "node scripts/start.js partner-1",
+    "start": "node scripts/start.js partner-2",
     "build": "node scripts/build.js partner-1",
     "test": "node scripts/test.js --env=jsdom"
   },

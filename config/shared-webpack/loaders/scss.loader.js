@@ -40,7 +40,7 @@ const scssLoader = ({partnerName}) => ({
           replace: `${partnerName}/_settings.${partnerName}`,
           flags: 'g',
           file: true
-      }
+      },
     },
   ],
 });

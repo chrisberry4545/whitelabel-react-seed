@@ -2,13 +2,23 @@ import { Component } from 'react';
 import * as React from 'react';
 import './shared-app.component.scss';
 
-import { Warrior } from './../../ditest/interfaces';
-import { myContainer } from './../../ditest/inversify.config';
-import { TYPES } from './../../ditest/types';
+import {
+  TYPES,
+} from './../dependency-injection';
+
+import {
+  myContainer,
+} from './../dependency-injection/inversify.config';
+
+import {
+  ExampleServiceInterface,
+} from './../../services';
 
 export class SharedAppComponent extends Component {
   public render() {
-    const ninja = myContainer.get<Warrior>(TYPES.Warrior);
+    const exampleService =
+      myContainer.get<ExampleServiceInterface>(TYPES.ExampleService);
+    const returnedData = exampleService.getSomeData();
     return (
       <div className='c-app'>
         <header className='c-app__header'>
@@ -18,6 +28,8 @@ export class SharedAppComponent extends Component {
         <div className='c-app__color c-app__color--primary'></div>
         <h4 className='c-app__color-name'>Secondary color</h4>
         <div className='c-app__color c-app__color--secondary'></div>
+
+        <div>Test data {returnedData}</div>
       </div>
     );
   }

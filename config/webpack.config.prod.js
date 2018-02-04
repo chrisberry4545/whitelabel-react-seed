@@ -12,9 +12,14 @@ const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const cssLoader = require('./shared-webpack/css-loader');
-const scssLoader = require('./shared-webpack/scss-loader');
-const tsLintLoader = require('./shared-webpack/ts-lint-loader');
+const cssLoader = require('./shared-webpack/loaders/css.loader');
+const scssLoader = require('./shared-webpack/loaders/scss.loader');
+const tsLintLoader = require('./shared-webpack/loaders/ts-lint.loader');
+const tsxLoader = require('./shared-webpack/loaders/tsx.loader');
+const jsLoader = require('./shared-webpack/loaders/js.loader');
+const jsSourceMapLoader = require('./shared-webpack/loaders/js-source-maps.loader');
+const fileLoader = require('./shared-webpack/loaders/file.loader');
+const imageLoader = require('./shared-webpack/loaders/image.loader');
 
 const partnerName = process.env.PARTNER_NAME;
 
@@ -112,28 +117,15 @@ module.exports = {
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.
         oneOf: [
-          // "url" loader works just like "file" loader but it also embeds
-          // assets smaller than specified size as data URLs to avoid requests.
-          {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-            loader: require.resolve('url-loader'),
-            options: {
-              limit: 10000,
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
-          { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
-          { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
-          // Process JS with Babel.
-          {
-            test: /\.(js|jsx|mjs)$/,
-            include: paths.appSrc,
-            loader: require.resolve('babel-loader'),
-            options: {
-
-              compact: true,
-            },
-          },
+          imageLoader(),
+          tsxLoader({
+            partnerName,
+          }),
+          jsSourceMapLoader(),
+          jsLoader({
+            compact: true,
+            paths,
+          }),
           cssLoader({
             shouldUseSourceMap,
             publicPath,
@@ -141,21 +133,7 @@ module.exports = {
           scssLoader({
             partnerName,
           }),
-          // "file" loader makes sure assets end up in the `build` folder.
-          // When you `import` an asset, you get its filename.
-          // This loader doesn't use a "test" so it will catch all modules
-          // that fall through the other loaders.
-          {
-            loader: require.resolve('file-loader'),
-            // Exclude `js` files to keep "css" loader working as it injects
-            // it's runtime that would otherwise processed through "file" loader.
-            // Also exclude `html` and `json` extensions so they get processed
-            // by webpacks internal loaders.
-            exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
-            options: {
-              name: 'static/media/[name].[hash:8].[ext]',
-            },
-          },
+          fileLoader(),
           // ** STOP ** Are you adding a new loader?
           // Make sure to add the new loader(s) before the "file" loader.
         ],
