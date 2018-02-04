@@ -14,6 +14,10 @@ import {
   ExampleServiceInterface,
 } from './../../services';
 
+import {
+  TEST_ICON,
+} from './../icons';
+
 export class SharedAppComponent extends Component {
   public render() {
     const exampleService =
@@ -30,6 +34,9 @@ export class SharedAppComponent extends Component {
         <div className='c-app__color c-app__color--secondary'></div>
 
         <div>Test data {returnedData}</div>
+
+        <h4>Svg</h4>
+        <TEST_ICON/>
       </div>
     );
   }
