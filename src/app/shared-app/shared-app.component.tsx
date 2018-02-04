@@ -10,13 +10,14 @@ export class SharedAppComponent extends Component {
   public render() {
     const ninja = myContainer.get<Warrior>(TYPES.Warrior);
     return (
-      <div className='App'>
-        <header className='App-header'>
-        <h1 className='App-title'>Welcome to React</h1>
+      <div className='c-app'>
+        <header className='c-app__header'>
+          <h1 className='c-app__title'>ChrisB React Seed</h1>
         </header>
-        <p className='App-intro'>
-        To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <h4 className='c-app__color-name'>Primary color</h4>
+        <div className='c-app__color c-app__color--primary'></div>
+        <h4 className='c-app__color-name'>Secondary color</h4>
+        <div className='c-app__color c-app__color--secondary'></div>
       </div>
     );
   }
